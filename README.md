@@ -79,4 +79,8 @@ Tests simple file reading of single-column data.
         }
     }
     ```
-    
+### Bonus
+1. For realizing that the array cannot be initialized in the constructor, assigning `null` in the constructor, and leaving initialization for `read`.
+2. For properly handling an uninitialized array in `sum`.
+
+
