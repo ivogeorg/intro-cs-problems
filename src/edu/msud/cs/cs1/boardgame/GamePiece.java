@@ -18,6 +18,10 @@ public abstract class GamePiece {
         this.pos.y = pos.y;
     }
 
+    public Position getPosition() {
+        return pos;
+    }
+
     public void age() {
         if (life > 0) life--;
         if (life == 0) isAlive = false;

@@ -1,6 +1,7 @@
 package edu.msud.cs.cs1.boardgame;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Game {
 
@@ -76,12 +77,25 @@ public class Game {
     }
 
     private void letThemMarch() {
-        for (ArrayList<GamePiece> position: board)
-            for (GamePiece piece: position) {
-                Move move = piece.move();
-
-                // TODO: check if legal, decide on wrap-around
+        for (int x=0; x<width; x++) {
+            for (int y = 0; y < height; y++) {
+                ArrayList<GamePiece> position = board.get(y * width + x);
+                Iterator<GamePiece> iter = position.iterator();
+                while (iter.hasNext()) {
+                    GamePiece piece = iter.next();
+                    Move move = piece.move();
+                    // using wraparound on the board
+                    // the following avoids negative positions
+                    int xx = (piece.getPosition().x + width + move.x) % width;
+                    int yy = (piece.getPosition().y + height + move.y) % height;
+                    ArrayList<GamePiece> destination = board.get(y * width + x);
+                    if (destination != position) {
+                        iter.remove();
+                        destination.add(piece);
+                    }
+                }
             }
+        }
     }
 
     private void aYearGoesBy() {
