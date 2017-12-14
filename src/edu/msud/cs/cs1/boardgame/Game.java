@@ -1,13 +1,13 @@
 package edu.msud.cs.cs1.boardgame;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class Game {
 
     public static final double GRUNT_PREVALENCE = 0.6;
     public static final int INIT_LIFE = 15;
+    public static final int PAUSE_BETWEEN_ROUNDS = 1000; // in milliseconds
+    public static final int BATTLE_AGING = 3;
 
     private ArrayList<ArrayList<GamePiece>> board;
     private int height, width; // needed for display and moves
@@ -28,21 +28,36 @@ public class Game {
                 board.get((int) Math.floor(Math.random()*board.size())).add(new Warrior(INIT_LIFE));
     }
 
-    public boolean turn() {
-
-        if (anyoneLeft()) {
-
-            // TODO: turn
-
+    public void play() {
+        while (anyoneLeft()) {
+            Game.showBoard(this);
+            letThemMarch();
+            doBattle();
+            aYearGoesBy();
+            buryDead();
+            try {
+                Thread.sleep(PAUSE_BETWEEN_ROUNDS);
+            } catch(InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
         }
-
-        return false;
+        System.out.println("Game over!");
     }
 
     public static void showBoard(Game g) {
 
-        // TODO
-
+        // TODO: Show in grid form, counting warriors and grunts
+        // |---------|---------|---------|---------|---------|
+        // |W-12 G- 6|W- 0 G- 3|W- 1 G- 0|W- 5 G- 5|W- 0 G- 0|
+        // |---------|---------|---------|---------|---------|
+        // |W- 0 G- 1|W- 2 G- 3|W- 0 G- 0|W- 0 G- 1|W- 2 G- 4|
+        // |---------|---------|---------|---------|---------|
+        // |W- 0 G- 0|W- 0 G- 0|W- 1 G- 2|W- 1 G- 6|W-22 G-24|
+        // |---------|---------|---------|---------|---------|
+        // |W- 7 G- 8|W- 0 G- 4|W- 3 G- 0|W- 0 G- 1|W- 2 G- 1|
+        // |---------|---------|---------|---------|---------|
+        // |W- 0 G- 5|W- 2 G- 1|W- 1 G- 1|W- 0 G- 0|W- 1 G- 4|
+        // |---------|---------|---------|---------|---------|
     }
 
     private boolean anyoneLeft() {
@@ -51,8 +66,35 @@ public class Game {
         return false;
     }
 
+    private void buryDead() {
+        for (ArrayList<GamePiece> position: board)
+            for (GamePiece piece: position)
+                if (!piece.isAlive()) position.remove(piece);
+    }
+
+    private void letThemMarch() {
+        for (ArrayList<GamePiece> position: board)
+            for (GamePiece piece: position) {
+                Move move = piece.move();
+
+                // TODO: check if legal, decide on wrap-around
+            }
+    }
+
+    private void aYearGoesBy() {
+        for (ArrayList<GamePiece> position: board)
+            for (GamePiece piece: position)
+                if (piece.isAlive()) piece.age();
+    }
+
+    private void doBattle() {
+
+        // TODO: For each piece, if there is
+
+    }
+
     public static void main(String[] args) {
-
-
+        Game game = new Game(5, 5, 25);
+        game.play();
     }
 }

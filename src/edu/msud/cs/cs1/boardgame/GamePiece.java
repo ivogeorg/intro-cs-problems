@@ -15,6 +15,14 @@ public abstract class GamePiece {
         if (life == 0) isAlive = false;
     }
 
+    public void age(int years) {
+        if (life > 0) life -= years;
+        if (life <= 0) {
+            life = 0;
+            isAlive = false;
+        }
+    }
+
     public boolean isAlive() {
         return isAlive;
     }
