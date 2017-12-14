@@ -4,11 +4,18 @@ public abstract class GamePiece {
 
     private int life;
     private boolean isAlive;
-    private int x, y;
+    private Position pos;
 
-    public GamePiece(int x, int y, int life) {
+    public GamePiece(Position pos, int life) {
         this.life = life;
         this.isAlive = true;
+        this.pos.x = pos.x;
+        this.pos.y = pos.y;
+    }
+
+    public void setPosition(Position pos) {
+        this.pos.x = pos.x;
+        this.pos.y = pos.y;
     }
 
     public void age() {

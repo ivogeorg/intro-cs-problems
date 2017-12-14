@@ -2,8 +2,8 @@ package edu.msud.cs.cs1.boardgame;
 
 public final class Grunt extends GamePiece {
 
-    public Grunt(int x, int y, int life) {
-        super(x, y, life);
+    public Grunt(Position pos, int life) {
+        super(pos, life);
     }
 
     public Move move() {

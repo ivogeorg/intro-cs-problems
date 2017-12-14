@@ -3,8 +3,8 @@ package edu.msud.cs.cs1.boardgame;
 public final class Warrior extends GamePiece {
     private static final double LONGEVITY = 1.4;
 
-    public Warrior(int x, int y, int life) {
-        super(x, y, (int) Math.ceil(life*LONGEVITY));
+    public Warrior(Position pos, int life) {
+        super(pos, (int) Math.ceil(life*LONGEVITY));
     }
 
     public Move move() {

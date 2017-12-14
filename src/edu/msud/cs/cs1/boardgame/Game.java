@@ -17,16 +17,18 @@ public class Game {
         this.height = height;
         this.width = width;
 
-        board = new ArrayList<>(height*width);
-        for (int i=0; i<height*width; i++)
+        board = new ArrayList<>(height * width);
+        for (int i=0; i<height * width; i++)
             board.add(new ArrayList<GamePiece>());
 
-        // TODO: add random positions
-        while (initNumPieces > 0)
-            if (Math.random() <= GRUNT_PREVALENCE)
-                board.get((int) Math.floor(Math.random()*board.size())).add(new Grunt(INIT_LIFE));
-            else
-                board.get((int) Math.floor(Math.random()*board.size())).add(new Warrior(INIT_LIFE));
+        while (initNumPieces > 0) {
+            int x = (int) Math.floor(Math.random() * width);
+            int y = (int) Math.floor(Math.random() * height);
+            Position pos = new Position(x, y);
+            GamePiece piece = (Math.random() <= GRUNT_PREVALENCE) ? new Grunt(pos, INIT_LIFE) : new Warrior(pos, INIT_LIFE);
+            board.get(y * width + x).add(piece);
+            initNumPieces --;
+        }
     }
 
     public void play() {
