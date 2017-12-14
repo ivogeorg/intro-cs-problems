@@ -1,4 +1,4 @@
-# Problems for common final
+# Problems for written final
 
 ## `FileReader` class
 
@@ -93,7 +93,16 @@ Tests the proficiency of working with multi-dimensional arrays and the ability t
 ### Notes
 1. This problem applies _valid_ max-pooling and average-pooling transformations to images in 2D matrix form. This means that the output dimensions are the input dimensions minus the filter size plus 1.
 2. The filters are square. The filter size cannot be bigger than any of the input dimensions.
-3. This problem affords a variety of questions:
+3. The output is:
+   ```
+    6.00 7.00
+    9.00 10.00
+    9.00 10.00
+    
+    6.00 7.00 8.00
+    4.33 5.33 6.33
+   ```
+4. This problem affords a variety of questions:
     * Provide the output of the application of a filter to an image, possibly withholding the name of the filter to prevent _"short-circuiting"_ the solution. For example:
     ```java
     package edu.msud.cs.cs1.matrix;
@@ -135,7 +144,8 @@ Tests the proficiency of working with multi-dimensional arrays and the ability t
         }
     }
     ```
-    * Given the output of a the application of a filter to an image, provide the implementation of `print`'
+    * Given the output of a the application of a filter to an image, provide the implementation of `print`
+    * Vary the input and the size of the filter to achieve interesting and/or edge cases
     * Given the implementation of `max`, and possibly partial implementation of `avg`, and possibly the desired output of `main`, provide the full implementation of `avg`. For example:
     ```java
     package edu.msud.cs.cs1.matrix;
