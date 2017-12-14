@@ -220,3 +220,12 @@ Tests the proficiency of working with multi-dimensional arrays and the ability t
 1. For correctly completing the `output` initialization when that is withheld.
 2. For correctly completing the loop termaination conditions for the filter application when those are withheld.
 
+
+## `Game` class and `GamePiece` hierarchy
+
+Tests the knowledge of basic object-oriented terminology including types of variables and methods, identifier categories, abstract classes, inheritance, and polimorphism. It also provides a rich context in which various method implementations can be asked for. _Inspired by The World of Warcraft._
+
+### Notes
+
+### Bonus
+
