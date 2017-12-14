@@ -1,10 +1,7 @@
 package edu.msud.cs.cs1.boardgame;
 
-public final class Position implements TwoDimensional {
-    public int x, y;
-
+public final class Position extends TwoDimensional {
     public Position(int x, int y) {
-        this.x = x;
-        this.y = y;
+        super(x, y);
     }
 }
