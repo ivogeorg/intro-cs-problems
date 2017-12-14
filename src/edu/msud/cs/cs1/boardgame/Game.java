@@ -21,6 +21,7 @@ public class Game {
         for (int i=0; i<height*width; i++)
             board.add(new ArrayList<GamePiece>());
 
+        // TODO: add random positions
         while (initNumPieces > 0)
             if (Math.random() <= GRUNT_PREVALENCE)
                 board.get((int) Math.floor(Math.random()*board.size())).add(new Grunt(INIT_LIFE));

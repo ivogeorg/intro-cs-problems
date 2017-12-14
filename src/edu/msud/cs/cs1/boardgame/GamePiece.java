@@ -4,8 +4,9 @@ public abstract class GamePiece {
 
     private int life;
     private boolean isAlive;
+    private int x, y;
 
-    public GamePiece(int life) {
+    public GamePiece(int x, int y, int life) {
         this.life = life;
         this.isAlive = true;
     }
