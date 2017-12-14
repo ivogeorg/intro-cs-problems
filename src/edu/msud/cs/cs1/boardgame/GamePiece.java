@@ -23,6 +23,11 @@ public abstract class GamePiece {
         }
     }
 
+    public void perish() {
+        life = 0;
+        isAlive = false;
+    }
+
     public boolean isAlive() {
         return isAlive;
     }

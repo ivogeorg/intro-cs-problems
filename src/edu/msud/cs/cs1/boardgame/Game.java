@@ -89,7 +89,14 @@ public class Game {
 
     private void doBattle() {
 
-        // TODO: For each piece, if there is
+        // TODO: For each position
+        // count warriors and grunts
+        // if there are non-zero of each kind
+        //   if they are different numbers
+        //     remove all of the outnumbered kind (use perish())
+        //     battle-age the survivors
+        //   else
+        //     battle-age all
 
     }
 
