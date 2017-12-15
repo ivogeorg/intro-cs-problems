@@ -1,7 +1,6 @@
 package edu.msud.cs.cs1.boardgame;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 
 public class Game {
@@ -21,48 +20,72 @@ public class Game {
 
         board = new ArrayList<>(height * width);
         for (int i=0; i<height * width; i++)
-            board.add(new ArrayList<GamePiece>());
+            board.add(new ArrayList<>());
 
         while (initNumPieces > 0) {
             int x = (int) Math.floor(Math.random() * width);
             int y = (int) Math.floor(Math.random() * height);
             Position pos = new Position(x, y);
-            GamePiece piece = (Math.random() <= GRUNT_PREVALENCE) ? new Grunt(pos, INIT_LIFE) : new Warrior(pos, INIT_LIFE);
+            GamePiece piece = (Math.random() <= GRUNT_PREVALENCE) ?
+                    new Grunt(pos, INIT_LIFE) :
+                    new Warrior(pos, INIT_LIFE);
             board.get(y * width + x).add(piece);
             initNumPieces --;
         }
     }
-
+    // TODO: javadoc comments for the boardgame package
     public void play() {
+        int rounds = 0;
         while (anyoneLeft()) {
             Game.showBoard(this);
             letThemMarch();
             doBattle();
             aYearGoesBy();
             buryDead();
+            rounds ++;
             try {
                 Thread.sleep(PAUSE_BETWEEN_ROUNDS);
             } catch(InterruptedException ex) {
                 Thread.currentThread().interrupt();
             }
         }
-        System.out.println("Game over!");
+        System.out.printf("Game over! Game took %d rounds.\n", rounds);
     }
 
     public static void showBoard(Game g) {
-
-        // TODO: Show in grid form, counting warriors and grunts
-        // |---------|---------|---------|---------|---------|
-        // |W-12 G- 6|W- 0 G- 3|W- 1 G- 0|W- 5 G- 5|W- 0 G- 0|
-        // |---------|---------|---------|---------|---------|
-        // |W- 0 G- 1|W- 2 G- 3|W- 0 G- 0|W- 0 G- 1|W- 2 G- 4|
-        // |---------|---------|---------|---------|---------|
-        // |W- 0 G- 0|W- 0 G- 0|W- 1 G- 2|W- 1 G- 6|W-22 G-24|
-        // |---------|---------|---------|---------|---------|
-        // |W- 7 G- 8|W- 0 G- 4|W- 3 G- 0|W- 0 G- 1|W- 2 G- 1|
-        // |---------|---------|---------|---------|---------|
-        // |W- 0 G- 5|W- 2 G- 1|W- 1 G- 1|W- 0 G- 0|W- 1 G- 4|
-        // |---------|---------|---------|---------|---------|
+        // Show in grid form, counting warriors and grunts (obj instanceof c)
+        // in alphabetic order, grunts-warriors
+        // |-------|-------|-------|-------|-------|
+        // | 12-  6|  0-  3|  1-  0|  5-  5|  0-  0|
+        // |-------|-------|-------|-------|-------|
+        // |  0-  1|  2-  3|  0-  0|  0-  1|  2-  4|
+        // |-------|-------|-------|-------|-------|
+        // |  0-  0|  0-  0|  1-  2|  1-  6| 22- 24|
+        // |-------|-------|-------|-------|-------|
+        // |  7-  8|  0-  4|  3-  0|  0-  1|  2-  1|
+        // |-------|-------|-------|-------|-------|
+        // |  0-  5|  2-  1|  1-  1|  0-  0|  1-  4|
+        // |-------|-------|-------|-------|-------|
+        StringBuilder display = new StringBuilder();
+        for (int y = 0; y < g.height; y++) {
+            for (int x = 0; x < g.width; x++) display.append("|-------");
+            display.append("|\n");
+            for (int x = 0; x < g.width; x++) {
+                ArrayList<GamePiece> position = g.board.get(y * g.width + x);
+                // count grunts and warriors
+                int grunts = 0, warriors = 0;
+                for (GamePiece piece : position) {
+                    if (piece instanceof Grunt) grunts++;
+                    else if (piece instanceof Warrior) warriors++;
+                    else System.err.println("Warning: Unknown subclass of GamePiece");
+                }
+                display.append(String.format("|%03d-%03d", grunts, warriors));
+            }
+            display.append("|\n");
+        }
+        for (int x = 0; x < g.width; x++) display.append("|-------");
+        display.append("|\n");
+        System.out.println(display);
     }
 
     private boolean anyoneLeft() {
@@ -109,7 +132,7 @@ public class Game {
 
         // TODO: For each position
         // count warriors and grunts
-        // if there are non-zero of each kind
+        // if there are non-zero of each kind (obj instanceof c)
         //   if they are different numbers
         //     remove all of the outnumbered kind (use perish())
         //     battle-age the survivors
