@@ -9,12 +9,12 @@
 
 ## `FileReader` class problem
 
-For detailed description and problems follow this [link](fileread).
+For detailed description and problems follow this [link](src/edu/msud/cs/cs1/fileread).
 
 ## `Filter` class problem
 
-For detailed description and problems follow this [link](matrix).
+For detailed description and problems follow this [link](src/edu/msud/cs/cs1/matrix).
 
 ## Board game problem
 
-For detailed description and problems follow this [link](boardgame).
+For detailed description and problems follow this [link](src/edu/msud/cs/cs1/boardgame).
