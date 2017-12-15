@@ -7,10 +7,9 @@ public abstract class GamePiece {
     private Position pos;
 
     public GamePiece(Position pos, int life) {
+        this.pos = new Position(pos.x, pos.y);
         this.life = life;
         this.isAlive = true;
-        this.pos.x = pos.x;
-        this.pos.y = pos.y;
     }
 
     public void setPosition(Position pos) {
