@@ -73,13 +73,8 @@ public class Game {
             for (int x = 0; x < g.width; x++) {
                 ArrayList<GamePiece> position = g.board.get(y * g.width + x);
                 // count grunts and warriors
-                int grunts = 0, warriors = 0;
-                for (GamePiece piece : position) {
-                    if (piece instanceof Grunt) grunts++;
-                    else if (piece instanceof Warrior) warriors++;
-                    else System.err.println("Warning: Unknown subclass of GamePiece");
-                }
-//                display.append(String.format("|%03d-%03d", grunts, warriors));
+                Population pop = g.countPieces(position);
+                int grunts = pop.x, warriors = pop.y;
                 display.append(String.format("|%3d-%3d", grunts, warriors));
             }
             display.append("|\n");
@@ -130,8 +125,6 @@ public class Game {
     }
 
     private void doBattle() {
-
-        // TODO: For each position
         // count warriors and grunts
         // if there are non-zero of each kind (obj instanceof c)
         //   if they are different numbers
@@ -141,24 +134,33 @@ public class Game {
         //     battle-age all
         for (ArrayList<GamePiece> position: board) {
             // count grunts and warriors
-            int grunts = 0, warriors = 0;
-            for (GamePiece piece : position) {
-                if (piece instanceof Grunt) grunts++;
-                else if (piece instanceof Warrior) warriors++;
-                else System.err.println("Warning: Unknown subclass of GamePiece");
-            }
-            if (grunts == warriors)
+            Population pop = countPieces(position);
+            int grunts = pop.x, warriors = pop.y;
+            if (grunts == warriors) {
                 if (grunts > 0)
                     position.forEach((GamePiece piece) -> piece.age(BATTLE_AGING));
-            else if (grunts > warriors)
-                position.removeIf((GamePiece piece) -> piece instanceof Warrior);
-                if (position.size() > 0)
-                        position.forEach((GamePiece piece) -> piece.age(BATTLE_AGING));
-            else
-                position.removeIf((GamePiece piece) -> piece instanceof Grunt);
+            } else if (grunts > warriors) {
+                if (warriors > 0)
+                    position.removeIf((GamePiece piece) -> piece instanceof Warrior);
                 if (position.size() > 0)
                     position.forEach((GamePiece piece) -> piece.age(BATTLE_AGING));
+            } else {
+                if (grunts > 0)
+                    position.removeIf((GamePiece piece) -> piece instanceof Grunt);
+                if (position.size() > 0)
+                    position.forEach((GamePiece piece) -> piece.age(BATTLE_AGING));
+            }
         }
+    }
+
+    private Population countPieces(ArrayList<GamePiece> position) {
+        int grunts = 0, warriors = 0;
+        for (GamePiece piece : position) {
+            if (piece instanceof Grunt) grunts++;
+            else if (piece instanceof Warrior) warriors++;
+            else System.err.println("Warning: Unknown subclass of GamePiece");
+        }
+        return new Population(grunts, warriors);
     }
 
     public static void main(String[] args) {
