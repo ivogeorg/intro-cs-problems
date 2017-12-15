@@ -1,14 +1,15 @@
 package edu.msud.cs.cs1.boardgame;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Game {
 
-    public static final double GRUNT_PREVALENCE = 0.6;
-    public static final int INIT_LIFE = 15;
+    public static final double GRUNT_PREVALENCE = 0.55;
+    public static final int INIT_LIFE = 30;
     public static final int PAUSE_BETWEEN_ROUNDS = 1000; // in milliseconds
-    public static final int BATTLE_AGING = 3;
+    public static final int BATTLE_AGING = 2;
 
     private ArrayList<ArrayList<GamePiece>> board;
     private int height, width; // needed for display and moves
@@ -26,7 +27,7 @@ public class Game {
             int x = (int) Math.floor(Math.random() * width);
             int y = (int) Math.floor(Math.random() * height);
             Position pos = new Position(x, y);
-            GamePiece piece = (Math.random() <= GRUNT_PREVALENCE) ?
+            GamePiece piece = (Math.random() < GRUNT_PREVALENCE) ?
                     new Grunt(pos, INIT_LIFE) :
                     new Warrior(pos, INIT_LIFE);
             board.get(y * width + x).add(piece);
@@ -38,7 +39,7 @@ public class Game {
         int rounds = 0;
         Population init = countAllPieces();
         System.out.printf("Initial population: Grunts-%d, Warriors-%d\n", init.x, init.y);
-        while (isAnyoneLeft()) {
+        while (anyOpponentsLeft()) {
             Game.showBoard(this);
             doBattle();
             buryTheDead();
@@ -54,6 +55,13 @@ public class Game {
             }
         }
         System.out.printf("Game over! Game took %d rounds.\n", rounds);
+        Population fin = countAllPieces();
+        if (fin.x == fin.y)
+            System.out.println("Mutual anihilation... :(");
+        else if (fin.x == 0)
+            System.out.println("Warriors win!");
+        else
+            System.out.println("Grunts win!");
     }
 
     public static void showBoard(Game g) {
@@ -88,10 +96,9 @@ public class Game {
         System.out.println(display);
     }
 
-    private boolean isAnyoneLeft() {
-        for (ArrayList<GamePiece> position: board)
-            if (position.size() > 0) return true;
-        return false;
+    private boolean anyOpponentsLeft() {
+        Population pop = countAllPieces();
+        return !(pop.x == 0 || pop.y == 0);
     }
 
     private void buryTheDead() {
