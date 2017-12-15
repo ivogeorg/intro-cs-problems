@@ -1,6 +1,7 @@
 package edu.msud.cs.cs1.boardgame;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 
 public class Game {
@@ -72,8 +73,7 @@ public class Game {
 
     private void buryDead() {
         for (ArrayList<GamePiece> position: board)
-            for (GamePiece piece: position)
-                if (!piece.isAlive()) position.remove(piece);
+            position.removeIf((GamePiece piece) -> !piece.isAlive());
     }
 
     private void letThemMarch() {
@@ -84,14 +84,15 @@ public class Game {
                 while (iter.hasNext()) {
                     GamePiece piece = iter.next();
                     Move move = piece.move();
-                    // using wraparound on the board
-                    // the following avoids negative positions
+                    // NOTE: using wraparound on the board
+                    // the following avoids negative indices
                     int xx = (piece.getPosition().x + width + move.x) % width;
                     int yy = (piece.getPosition().y + height + move.y) % height;
                     ArrayList<GamePiece> destination = board.get(y * width + x);
                     if (destination != position) {
                         iter.remove();
                         destination.add(piece);
+                        piece.setPosition(new Position(xx, yy));
                     }
                 }
             }
