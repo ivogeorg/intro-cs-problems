@@ -33,16 +33,20 @@ public class Game {
             initNumPieces --;
         }
     }
-    // TODO: javadoc comments for the boardgame package
+
     public void play() {
         int rounds = 0;
-        while (anyoneLeft()) {
+        Population init = countAllPieces();
+        System.out.printf("Initial population: Grunts-%d, Warriors-%d\n", init.x, init.y);
+        while (isAnyoneLeft()) {
             Game.showBoard(this);
-            letThemMarch();
             doBattle();
+            buryTheDead();
+            letThemForage();
             aYearGoesBy();
-            buryDead();
             rounds ++;
+            Population rnd = countAllPieces();
+            System.out.printf("Survivors: Grunts-%d, Warriors-%d\n", rnd.x, rnd.y);
             try {
                 Thread.sleep(PAUSE_BETWEEN_ROUNDS);
             } catch(InterruptedException ex) {
@@ -54,7 +58,7 @@ public class Game {
 
     public static void showBoard(Game g) {
         // Show in grid form, counting warriors and grunts (obj instanceof c)
-        // in alphabetic order, grunts-warriors
+        // grunts on the left, warriors on the right
         // |-------|-------|-------|-------|-------|
         // | 12-  6|  0-  3|  1-  0|  5-  5|  0-  0|
         // |-------|-------|-------|-------|-------|
@@ -73,7 +77,7 @@ public class Game {
             for (int x = 0; x < g.width; x++) {
                 ArrayList<GamePiece> position = g.board.get(y * g.width + x);
                 // count grunts and warriors
-                Population pop = g.countPieces(position);
+                Population pop = g.countPosPieces(position);
                 int grunts = pop.x, warriors = pop.y;
                 display.append(String.format("|%3d-%3d", grunts, warriors));
             }
@@ -84,18 +88,18 @@ public class Game {
         System.out.println(display);
     }
 
-    private boolean anyoneLeft() {
+    private boolean isAnyoneLeft() {
         for (ArrayList<GamePiece> position: board)
             if (position.size() > 0) return true;
         return false;
     }
 
-    private void buryDead() {
+    private void buryTheDead() {
         for (ArrayList<GamePiece> position: board)
             position.removeIf((GamePiece piece) -> !piece.isAlive());
     }
 
-    private void letThemMarch() {
+    private void letThemForage() {
         for (int x=0; x<width; x++) {
             for (int y = 0; y < height; y++) {
                 ArrayList<GamePiece> position = board.get(y * width + x);
@@ -107,7 +111,7 @@ public class Game {
                     // the following avoids negative indices
                     int xx = (piece.getPosition().x + width + move.x) % width;
                     int yy = (piece.getPosition().y + height + move.y) % height;
-                    ArrayList<GamePiece> destination = board.get(y * width + x);
+                    ArrayList<GamePiece> destination = board.get(yy * width + xx);
                     if (destination != position) {
                         iter.remove();
                         destination.add(piece);
@@ -125,16 +129,16 @@ public class Game {
     }
 
     private void doBattle() {
+        // Description in pseudocode:
         // count warriors and grunts
         // if there are non-zero of each kind (obj instanceof c)
-        //   if they are different numbers
+        //   if they have different counts
         //     remove all of the outnumbered kind (use perish())
         //     battle-age the survivors
-        //   else
+        //   else (they have equal counts)
         //     battle-age all
         for (ArrayList<GamePiece> position: board) {
-            // count grunts and warriors
-            Population pop = countPieces(position);
+            Population pop = countPosPieces(position);
             int grunts = pop.x, warriors = pop.y;
             if (grunts == warriors) {
                 if (grunts > 0)
@@ -153,7 +157,7 @@ public class Game {
         }
     }
 
-    private Population countPieces(ArrayList<GamePiece> position) {
+    private Population countPosPieces(ArrayList<GamePiece> position) {
         int grunts = 0, warriors = 0;
         for (GamePiece piece : position) {
             if (piece instanceof Grunt) grunts++;
@@ -163,8 +167,18 @@ public class Game {
         return new Population(grunts, warriors);
     }
 
+    private Population countAllPieces() {
+        int grunts = 0, warriors = 0;
+        for (ArrayList<GamePiece> position: board) {
+            Population pop = countPosPieces(position);
+            grunts += pop.x;
+            warriors += pop.y;
+        }
+        return new Population(grunts, warriors);
+    }
+
     public static void main(String[] args) {
-        Game game = new Game(5, 5, 25);
+        Game game = new Game(5, 5, 60);
         game.play();
     }
 }
