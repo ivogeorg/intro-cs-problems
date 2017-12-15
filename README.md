@@ -1,6 +1,6 @@
 # Problems for written final exam
 
-**Description:** Problems for a written final in introductory/intermediate computer science and programming in Java. _Origianlly created for the Computer Science department at the [Metropolitan State University of Denver](https://msudenver.edu/)._
+**Description:** Problems for a written final in introductory/intermediate computer science and programming in Java. _Origianlly created for the Department of Computer Science at the [Metropolitan State University of Denver](https://msudenver.edu/)._
 
 **Author:** Ivo Georgiev, PhD ([email](mailto:ivogeorg@gmail.com))
 
