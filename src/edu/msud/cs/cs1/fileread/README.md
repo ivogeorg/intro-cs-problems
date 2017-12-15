@@ -2,6 +2,8 @@
 
 Tests simple file reading of single-column data. _Inspired by the format of HackerRank problems._
 
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+
 ### Notes
 1. The format of the file to read is as follows:
     * The first number is an integer indicating the count of doubles
