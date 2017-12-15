@@ -2,6 +2,8 @@
 
 Tests the proficiency of working with multi-dimensional arrays and the ability to read and trace code. _Inspired by pooling layers in convolutional neural nets._
 
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+
 ### Notes
 1. This problem applies _valid_ max-pooling and average-pooling transformations to images in 2D matrix form. This means that the output dimensions are the input dimensions minus the filter size plus 1.
 2. The filters are square. The filter size cannot be bigger than any of the input dimensions.
